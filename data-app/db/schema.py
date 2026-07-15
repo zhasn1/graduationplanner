@@ -67,7 +67,7 @@ class Program(Base):
         "RequirementSection",
         back_populates="program",
         cascade="all, delete-orphan",
-        order_by="RequirementSection.position",
+        order_by="RequirementSection.id",
     )
 
 
@@ -77,7 +77,6 @@ class RequirementSection(Base):
     program_id = Column(String, ForeignKey("programs.id"), nullable=False)
     name = Column(String, nullable=False)
     level = Column(String, nullable=False)
-    position = Column(Integer, nullable=False, default=0)
     rule = Column(JSON, nullable=False)
     program = relationship("Program", back_populates="sections")
 

@@ -27,16 +27,15 @@ async def fetch_catalogs(token):
             data = await resp.json()
     if not data:
         raise Exception("no data returned")
-    catalog = max(data, key=lambda c: c.get("effectiveStartDate", ""))
+    catalog = max(data, key=lambda c: c.get("effectiveStartDate") or "")
     return {
-        "id": catalog["id"],
         "displayName": catalog["displayName"],
         "effectiveStartDate": catalog["effectiveStartDate"],
     }
 
 
 async def fetch_all_programs(token, effective_date=None):
-    """returns a dict of program id to program"""
+    """returns the raw dict program id to program, unfiltered"""
     page = 500
     programs = {}
     async with aiohttp.ClientSession() as session:
@@ -56,3 +55,43 @@ async def fetch_all_programs(token, effective_date=None):
                 break
             skip += page
     return programs
+
+
+async def fetch_courses_by_group_ids(token, group_ids, effective_date=None, size=50):
+    group_ids = sorted(group_ids)
+    batches = [group_ids[i : i + size] for i in range(0, len(group_ids), size)]
+
+    async def fetch_batch(session, batch):
+        params = {
+            "courseGroupIds": ",".join(batch),
+            "limit": len(batch),
+            **date_params(effective_date),
+        }
+        try:
+            async with session.get(
+                f"{API_URL}/courses/", headers=auth_headers(token), params=params
+            ) as resp:
+                if resp.status != 200:
+                    print(f"coursedog courses fetch failed: {resp.status}")
+                    return None
+                return await resp.json()
+        except Exception as e:
+            print(f"coursedog courses fetch failed: {e}")
+            return None
+
+    async with aiohttp.ClientSession() as session:
+        results = await asyncio.gather(
+            *(fetch_batch(session, batch) for batch in batches)
+        )
+    failed_batches = sum(1 for r in results if r is None)
+    if failed_batches:
+        print(f"{failed_batches} batches failed to fetch")
+
+    courses = {}
+    for res in results:
+        for course in (res or {}).values():
+            group_id = course.get("courseGroupId")
+            if group_id:
+                courses[group_id] = course
+    print(f"fetched {len(courses)} backfill courses")
+    return courses

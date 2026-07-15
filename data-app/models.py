@@ -21,9 +21,9 @@ class Constraints:
 
     def to_json(self):
         return {
-            f.name: val
-            for f, val in fields(self)
-            if (val := getattr(self, f.name)) is not None
+            f.name: value
+            for f in fields(self)
+            if (value := getattr(self, f.name)) is not None
         }
 
 
