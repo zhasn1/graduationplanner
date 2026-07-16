@@ -1,7 +1,10 @@
+import { HomePage } from "@/components/HomePage";
+import { getPrograms } from "@/lib/db";
+
 const Home = () => {
-  return (
-    <div>page</div>
-  )
+  const programs = getPrograms();
+  return <HomePage programs={programs} />
+  
 }
 
 export default Home
