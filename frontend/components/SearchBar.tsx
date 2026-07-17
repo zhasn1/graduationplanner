@@ -43,6 +43,7 @@ export function SearchBar({ value, onChange, onClear, searching }: SearchBarProp
         h="100%"
         px="0"
         _focus={{ boxShadow: "none" }}
+        _placeholder={{ color: "oklch(0.68 0.015 262)" }}
       />
       {searching && (
         <IconButton
