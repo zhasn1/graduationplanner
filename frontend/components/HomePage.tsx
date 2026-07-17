@@ -5,7 +5,7 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import type { Program } from "@/lib/db";
 import { SearchBar } from "./SearchBar";
 import { SearchResults } from "./SearchResults";
-
+import { Footer } from "./Footer";
 
 interface LandingProps {
   programs: Program[];
@@ -117,6 +117,7 @@ export function HomePage({ programs }: LandingProps) {
           )}
         </Box>
       </Box>
+      <Footer />
     </Flex>
   );
 }
