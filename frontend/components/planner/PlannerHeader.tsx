@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Link, Text } from "@chakra-ui/react";
 import { FiChevronLeft } from "react-icons/fi";
-
+import NextLink from "next/link";
 interface PlannerHeaderProps {
   program: string;
   creditsEarned: number;
@@ -12,7 +12,10 @@ export function PlannerHeader({
   creditsEarned,
   totalCredits,
 }: PlannerHeaderProps) {
-  const pct = Math.min(100, Math.round((creditsEarned / totalCredits) * 100));
+  const pct =
+    totalCredits > 0
+      ? Math.min(100, Math.round((creditsEarned / totalCredits) * 100))
+      : 0;
 
   return (
     <Flex
@@ -21,15 +24,15 @@ export function PlannerHeader({
       align="center"
       justify="space-between"
       gap="24px"
-      bg="oklch(0.99 0.004 85)"
+      bg="panel"
       borderBottom="1px solid"
-      borderColor="oklch(0.87 0.012 80)"
+      borderColor="line"
       px="34px"
       py="16px"
     >
       <Flex align="center" gap="16px">
         <Link
-          href="/"
+          asChild
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -37,18 +40,20 @@ export function PlannerHeader({
           h="36px"
           borderRadius="4px"
           border="1px solid"
-          borderColor="oklch(0.87 0.012 80)"
-          color="oklch(0.40 0.11 262)"
+          borderColor="line"
+          color="accent"
           flex="none"
         >
-          <FiChevronLeft size={16} />
+          <NextLink href="/" aria-label="Back to program search">
+            <FiChevronLeft size={16} />
+          </NextLink>
         </Link>
         <Box>
           <Text
-            fontFamily="var(--font-newsreader), serif"
+            fontFamily="heading"
             fontSize="23px"
             fontWeight="600"
-            color="oklch(0.22 0.025 262)"
+            color="ink"
             lineHeight="1"
           >
             {program}
@@ -58,14 +63,15 @@ export function PlannerHeader({
               as="span"
               display="inline-flex"
               alignItems="center"
+              flex="none"
               gap="7px"
-              fontFamily="var(--font-ibm-plex-mono), monospace"
-              fontSize="11px"
+              fontFamily="mono"
+              fontSize="10px"
               fontWeight="600"
               letterSpacing="0.04em"
               textTransform="uppercase"
-              color="oklch(0.99 0.004 85)"
-              bg="oklch(0.40 0.11 262)"
+              color="panel"
+              bg="accent"
               px="11px"
               py="5px"
               borderRadius="4px"
@@ -76,15 +82,15 @@ export function PlannerHeader({
               display="inline-flex"
               alignItems="center"
               gap="5px"
-              fontFamily="var(--font-ibm-plex-mono), monospace"
+              fontFamily="mono"
               fontSize="11px"
               fontWeight="600"
               letterSpacing="0.04em"
               textTransform="uppercase"
-              color="oklch(0.40 0.11 262)"
+              color="accent"
               bg="transparent"
               border="1px dashed"
-              borderColor="oklch(0.70 0.05 262)"
+              borderColor="accent.border"
               px="11px"
               py="5px"
               h="auto"
@@ -102,24 +108,24 @@ export function PlannerHeader({
           fontWeight="600"
           letterSpacing="0.08em"
           textTransform="uppercase"
-          color="oklch(0.92 0.008 80)"
+          color="ink.faint"
         >
           Credits
         </Text>
         <Flex align="baseline" gap="8px" mt="4px">
           <Text
-            fontFamily="var(--font-ibm-plex-mono), monospace"
+            fontFamily="mono"
             fontSize="22px"
             fontWeight="600"
-            color="oklch(0.40 0.11 262)"
+            color="accent"
             lineHeight="1"
           >
             {creditsEarned}
           </Text>
           <Text
-            fontFamily="var(--font-ibm-plex-mono), monospace"
+            fontFamily="mono"
             fontSize="13px"
-            color="oklch(0.92 0.008 80)"
+            color="ink.faint"
           >
             / {totalCredits}
           </Text>
@@ -128,14 +134,14 @@ export function PlannerHeader({
           w="220px"
           h="5px"
           borderRadius="2px"
-          bg="oklch(0.90 0.01 80)"
+          bg="line.soft"
           mt="8px"
           overflow="hidden"
         >
           <Box
             w={`${pct}%`}
             h="100%"
-            bg="oklch(0.40 0.11 262)"
+            bg="accent"
             borderRadius="2px"
           />
         </Box>

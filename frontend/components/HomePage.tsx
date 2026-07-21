@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import type { Program } from "@/lib/db";
 import { SearchBar } from "./SearchBar";
@@ -19,11 +19,9 @@ export function HomePage({ programs }: LandingProps) {
   const [query, setQuery] = useState("");
   const searching = query.trim().length > 0;
 
-  const sections = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const matched = q ? programs.filter((p) => matchesQuery(p, q)) : [];
-
-    return [
+  const q = query.trim().toLowerCase();
+  const matched = q ? programs.filter((p) => matchesQuery(p, q)) : [];
+  const sections = [
       {
         label: "Majors",
         items: matched.filter((p) => p.type === "Bachelor's"),
@@ -36,7 +34,6 @@ export function HomePage({ programs }: LandingProps) {
         ),
       },
     ];
-  }, [query, programs]);
 
   const noResults = searching && sections.every((s) => s.items.length === 0);
 
@@ -47,7 +44,7 @@ export function HomePage({ programs }: LandingProps) {
       w="100%"
       direction="column"
       overflow="hidden"
-      bg="oklch(0.975 0.008 85)"
+      bg="canvas"
       backgroundImage="repeating-linear-gradient(to bottom, transparent, transparent 35px, oklch(0.90 0.012 80 / 0.55) 35px, oklch(0.90 0.012 80 / 0.55) 36px)"
     >
       <Box
@@ -73,17 +70,17 @@ export function HomePage({ programs }: LandingProps) {
             transform={searching ? "translateY(-16px)" : "none"}
           >
             <Flex align="center" gap="16px" mb="26px">
-              <Box flex="1" h="1px" bg="oklch(0.87 0.012 80)" />
+              <Box flex="1" h="1px" bg="line" />
             </Flex>
             <Heading
               as="h1"
-              fontFamily="var(--font-newsreader), serif"
+              fontFamily={{ base: "48px", md: "72px" }}
               fontWeight="500"
               fontSize="72px"
               lineHeight="1.02"
               letterSpacing="-0.02em"
               m="0 0 20px"
-              color="oklch(0.413 0.166 20)"
+              color="maroon"
               textAlign="left"
             >
               Graduation Planner
@@ -91,7 +88,7 @@ export function HomePage({ programs }: LandingProps) {
             <Text
               fontSize="19px"
               lineHeight="1.5"
-              color="oklch(0.52 0.02 262)"
+              color="ink.soft"
               m="0 0 44px"
               maxW="520px"
               textAlign="left"

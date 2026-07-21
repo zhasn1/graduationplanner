@@ -1,38 +1,37 @@
-import { Box, Link, Text } from "@chakra-ui/react";
+import { Flex, Link, Text } from "@chakra-ui/react";
 import { FiGithub } from "react-icons/fi";
 
 export function Footer() {
   return (
-    <Box
+    <Flex
       as="footer"
-      position="relative"
-      zIndex={1}
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      gap="12px"
+      flex="none"
+      align="center"
+      justify="center"
+      gap="16px"
+      bg="panel"
+      borderTop="1px solid"
+      borderColor="line"
       px="24px"
-      pt="22px"
-      pb="30px"
+      py="18px"
       fontSize="13px"
-      color="oklch(0.60 0.02 262)"
-      lineHeight="1.6"
+      color="ink.muted"
     >
       <Link
-        href="https://github.com/samyok/repo"
+        href="https://github.com/zhasn1/graduationplanner"
         target="_blank"
         rel="noopener"
         display="inline-flex"
-        alignItems="center"
+        alignItems="accent"
         gap="8px"
-        color="oklch(0.40 0.11 262)"
+        color="accent"
         fontWeight="500"
-        _hover={{ color: "oklch(0.30 0.10 262)" }}
+        _hover={{ color: "accent.hover" }}
       >
         <FiGithub size={18} />
         View project on GitHub
       </Link>
-      <Text>Not affiliated with the University of Minnesota</Text>
-    </Box>
+      <Text as="span">Not affiliated with the University of Minnesota</Text>
+    </Flex>
   );
 }

@@ -61,11 +61,11 @@ function resolveNode(
   courseById: Map<string, CourseRow>,
 ): RuleNode {
   const constraints = toConstraints(node.constraints);
-
+  const name = node.name?.trim() || null;
   if (node.kind === "text") {
     return {
       kind: "text",
-      name: node.name,
+      name: name,
       constraints,
       text: node.text ?? "",
     };
@@ -81,7 +81,7 @@ function resolveNode(
         courses.push(toPlannerCourse(row));
       }
     }
-    return { kind: "course_set", name: node.name, constraints, courses };
+    return { kind: "course_set", name, constraints, courses };
   }
 
   const children = (node.children ?? []).map((child) =>
@@ -89,7 +89,7 @@ function resolveNode(
   );
   return simplifyGroup({
     kind: "group",
-    name: node.name,
+    name: name,
     constraints,
     children,
   });

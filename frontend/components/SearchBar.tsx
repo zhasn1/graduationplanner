@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Box, IconButton, Input } from "@chakra-ui/react";
 import { FiSearch, FiX } from "react-icons/fi";
@@ -10,7 +10,12 @@ interface SearchBarProps {
   searching: boolean;
 }
 
-export function SearchBar({ value, onChange, onClear, searching }: SearchBarProps) {
+export function SearchBar({
+  value,
+  onChange,
+  onClear,
+  searching,
+}: SearchBarProps) {
   return (
     <Box
       as="label"
@@ -18,15 +23,15 @@ export function SearchBar({ value, onChange, onClear, searching }: SearchBarProp
       alignItems="center"
       gap="14px"
       borderBottom="2px solid"
-      borderColor="oklch(0.87 0.012 80)"
+      borderColor="line"
       px="4px"
       h="58px"
       maxW="600px"
       mx="auto"
       transition="border-color .15s"
-      _focusWithin={{ borderColor: "oklch(0.40 0.11 262)" }}
+      _focusWithin={{ borderColor: "accent" }}
     >
-      <Box flex="none" color="oklch(0.60 0.02 262)" display="flex">
+      <Box flex="none" color="ink.muted" display="flex">
         <FiSearch size={20} />
       </Box>
       <Input
@@ -39,11 +44,11 @@ export function SearchBar({ value, onChange, onClear, searching }: SearchBarProp
         bg="transparent"
         flex="1"
         fontSize="17px"
-        color="oklch(0.22 0.025 262)"
+        color="ink"
         h="100%"
         px="0"
         _focus={{ boxShadow: "none" }}
-        _placeholder={{ color: "oklch(0.68 0.015 262)" }}
+        _placeholder={{ color: "ink.faint" }}
       />
       {searching && (
         <IconButton
@@ -52,7 +57,7 @@ export function SearchBar({ value, onChange, onClear, searching }: SearchBarProp
           variant="ghost"
           size="sm"
           flex="none"
-          color="oklch(0.60 0.02 262)"
+          color="ink.muted"
         >
           <FiX size={17} />
         </IconButton>

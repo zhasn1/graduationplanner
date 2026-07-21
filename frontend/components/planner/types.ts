@@ -1,4 +1,4 @@
-export type CourseStatus = "done" | "in progress" | "planned" | "not planned";
+export type CourseStatus = "done" | "current" | "planned" | "unplanned";
 
 export interface PlannerCourse {
   id: string;
@@ -71,22 +71,21 @@ export const termCredits = (term: PlanTerm) =>
 export const yearCredits = (year: PlanYear) =>
   year.terms.reduce((sum, term) => sum + termCredits(term), 0);
 
-let idCount = 0;
-
-const nextId = (prefix: string) =>
-  `${prefix}-${Date.now().toString(36)}-${(idCount++).toString(36)}`;
-
 export function makeYear(index: number, startYear: number): PlanYear {
   const fallYear = startYear + index;
   return {
-    id: nextId("year"),
+    id: `year-${fallYear}`,
     label: `Year ${index + 1}`,
     sub: `${fallYear} – ${fallYear + 1}`,
     terms: [
-      { id: nextId("term"), name: `Fall ${fallYear}`, courses: [] },
-      { id: nextId("term"), name: `Spring ${fallYear + 1}`, courses: [] },
+      { id: `term-fall-${fallYear}`, name: `Fall ${fallYear}`, courses: [] },
       {
-        id: nextId("term"),
+        id: `term-spring-${fallYear + 1}`,
+        name: `Spring ${fallYear + 1}`,
+        courses: [],
+      },
+      {
+        id: `term-summer-${fallYear + 1}`,
         name: `Summer ${fallYear + 1}`,
         courses: [],
         isSummer: true,
@@ -99,9 +98,32 @@ export function emptyPlan(startYear = new Date().getFullYear()): PlanYear[] {
   return Array.from({ length: 4 }, (_, i) => makeYear(i, startYear));
 }
 
-export const plannedCourseIds = (plan: PlanYear[]) =>
-  new Set(
-    plan.flatMap((year) =>
-      year.terms.flatMap((term) => term.courses.map((c) => c.id)),
-    ),
-  );
+export type TermStatus = "done" | "current" | "planned";
+const TERM_MONTHS: Record<string, [start: number, end: number]> = {
+  Spring: [0, 4], // Jan – May
+  Summer: [5, 7], // Jun – Aug
+  Fall: [8, 11], // Sep – Dec
+};
+
+export function termStatus(term: PlanTerm, now = new Date()): TermStatus {
+  const match = term.name.match(/\b(Spring|Summer|Fall)\s+(\d{4})\b/);
+  if (!match) return "planned";
+  const [, season, yearStr] = match;
+  const year = Number(yearStr);
+  const [startMonth, endMonth] = TERM_MONTHS[season];
+  if (now.getFullYear() > year) return "done";
+  if (now.getFullYear() < year) return "planned";
+  if (now.getMonth() > endMonth) return "done";
+  return now.getMonth() >= startMonth ? "current" : "planned";
+}
+
+export const plannedCourseStatuses = (plan: PlanYear[], now = new Date()) => {
+  const statuses = new Map<string, CourseStatus>();
+  for (const year of plan) {
+    for (const term of year.terms) {
+      const status = termStatus(term, now);
+      for (const course of term.courses) statuses.set(course.id, status);
+    }
+  }
+  return statuses;
+};

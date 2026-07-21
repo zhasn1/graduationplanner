@@ -1,5 +1,6 @@
 import { Box, Flex, Link, Text } from "@chakra-ui/react";
 import { FiChevronRight } from "react-icons/fi";
+import NextLink from "next/link";
 import type { Program } from "../lib/db";
 
 export interface ProgramSection {
@@ -20,14 +21,9 @@ export function SearchResults({
 }: SearchResultsProps) {
   return (
     <Box maxW="600px" mx="auto" mt="30px" textAlign="left">
-      <Text
-        fontFamily="var(--font-ibm-plex-mono), monospace"
-        fontSize="12.5px"
-        color="oklch(0.60 0.02 262)"
-        mb="20px"
-      >
+      <Text fontFamily="mono" fontSize="12.5px" color="ink.muted" mb="20px">
         RESULTS FOR{" "}
-        <Box as="span" fontWeight="600" color="oklch(0.22 0.025 262)">
+        <Box as="span" fontWeight="600" color="ink">
           &ldquo;{query}&rdquo;
         </Box>
       </Text>
@@ -41,7 +37,7 @@ export function SearchResults({
                 gap="10px"
                 mb="10px"
                 borderBottom="1px solid"
-                borderColor="oklch(0.87 0.012 80)"
+                borderColor="line"
                 pb="8px"
               >
                 <Text
@@ -49,23 +45,19 @@ export function SearchResults({
                   fontWeight="600"
                   letterSpacing="0.1em"
                   textTransform="uppercase"
-                  color="oklch(0.40 0.11 262)"
+                  color="accent"
                 >
                   {section.label}
                 </Text>
-                <Text
-                  fontFamily="var(--font-ibm-plex-mono), monospace"
-                  fontSize="11.5px"
-                  color="oklch(0.70 0.015 262)"
-                >
+                <Text fontFamily="mono" fontSize="11.5px" color="ink.fainter">
                   {section.items.length}
                 </Text>
               </Flex>
               <Flex direction="column">
                 {section.items.map((item) => (
                   <Link
+                    asChild
                     key={item.id}
-                    href={`/planner?program_id=${item.id}`}
                     display="flex"
                     alignItems="center"
                     justifyContent="space-between"
@@ -73,20 +65,22 @@ export function SearchResults({
                     py="14px"
                     px="6px"
                     borderBottom="1px solid"
-                    borderColor="oklch(0.90 0.01 80)"
-                    color="oklch(0.22 0.025 262)"
+                    borderColor="line.soft"
+                    color="ink"
                     transition="background .12s"
                     _hover={{
-                      bg: "oklch(0.94 0.02 262)",
-                      color: "oklch(0.30 0.10 262)",
+                      bg: "accent.bg",
+                      color: "accent.hover",
                     }}
                   >
-                    <Text fontSize="15px" fontWeight="600">
-                      {item.name}
-                    </Text>
-                    <Box flex="none" color="oklch(0.55 0.05 262)">
-                      <FiChevronRight size={16} />
-                    </Box>
+                    <NextLink href={`/planner?program_id=${item.id}`}>
+                      <Text fontSize="15px" fontWeight="600">
+                        {item.name}
+                      </Text>
+                      <Box flex="none" color="accent.soft">
+                        <FiChevronRight size={16} />
+                      </Box>
+                    </NextLink>
                   </Link>
                 ))}
               </Flex>
@@ -99,7 +93,7 @@ export function SearchResults({
           textAlign="center"
           py="36px"
           px="20px"
-          color="oklch(0.60 0.02 262)"
+          color="ink.muted"
           fontSize="15px"
         >
           No programs match &ldquo;{query}&rdquo;. Try a different major, minor,

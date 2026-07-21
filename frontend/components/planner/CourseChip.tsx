@@ -15,10 +15,10 @@ function dotColors(status: CourseStatus) {
   switch (status) {
     case "done":
       return { bg: "oklch(0.40 0.11 262)", border: "oklch(0.40 0.11 262)" };
-    case "in progress":
+    case "current":
       return { bg: "oklch(0.62 0.135 78)", border: "oklch(0.62 0.135 78)" };
     case "planned":
-      return { bg: "oklch(0.40 0.11 262)", border: "oklch(0.40 0.11 262)" };
+      return { bg: "transparent", border: "oklch(0.92 0.008 80)" };
     default:
       return { bg: "transparent", border: "oklch(0.87 0.012 80)" };
   }
@@ -35,7 +35,7 @@ export function CourseChip({
   const rail = variant === "rail";
   const dot = dotColors(status);
   const fontSize = rail ? "12px" : "12.5px";
-  const muted = status === "not planned";
+  const muted = status === "unplanned";
 
   return (
     <Flex
@@ -44,25 +44,41 @@ export function CourseChip({
       px="2px"
       py={rail ? "5px" : "7px"}
       w="100%"
-      role="group"
       opacity={muted ? 0.72 : 1}
     >
-      <Box
-        flex="none"
-        w="8px"
-        h="8px"
-        borderRadius="2px"
-        bg={dot.bg}
-        border="1.5px solid"
-        borderColor={dot.border}
-      />
+      {onRemove ? (
+        <IconButton
+          aria-label={`Remove ${code}`}
+          onClick={onRemove}
+          variant="plain"
+          flex="none"
+          minW="auto"
+          w="14px"
+          h="14px"
+          p="0"
+          color="line.faint"
+          _hover={{ color: "accent" }}
+        >
+          <FiX size={13} />
+        </IconButton>
+      ) : (
+        <Box
+          flex="none"
+          w="8px"
+          h="8px"
+          borderRadius="2px"
+          bg={dot.bg}
+          border="1.5px solid"
+          borderColor={dot.border}
+        />
+      )}
       <Text
         flex="none"
-        fontFamily="var(--font-ibm-plex-mono), monospace"
+        fontFamily="mono"
         fontWeight="600"
         fontSize={fontSize}
         letterSpacing="-0.01em"
-        color="oklch(0.22 0.025 262)"
+        color="ink"
       >
         {code}
       </Text>
@@ -70,51 +86,21 @@ export function CourseChip({
         flex="1"
         minW="0"
         fontSize={fontSize}
-        color="oklch(0.52 0.02 262)"
+        color="ink.soft"
         whiteSpace="nowrap"
         overflow="hidden"
         textOverflow="ellipsis"
       >
         {title}
       </Text>
-      {onRemove ? (
-        <>
-          <Text
-            flex="none"
-            fontFamily="var(--font-ibm-plex-mono), monospace"
-            fontSize="11px"
-            color="oklch(0.70 0.015 262)"
-            _groupHover={{ display: "none" }}
-          >
-            {cr}cr
-          </Text>
-          <IconButton
-            aria-label={`Remove ${code}`}
-            onClick={onRemove}
-            variant="ghost"
-            size="2xs"
-            flex="none"
-            minW="auto"
-            h="auto"
-            p="1px"
-            color="oklch(0.70 0.015 262)"
-            display="none"
-            _groupHover={{ display: "inline-flex" }}
-            _hover={{ color: "oklch(0.40 0.11 262)" }}
-          >
-            <FiX size={13} />
-          </IconButton>
-        </>
-      ) : (
-        <Text
-          flex="none"
-          fontFamily="var(--font-ibm-plex-mono), monospace"
-          fontSize="11px"
-          color="oklch(0.70 0.015 262)"
-        >
-          {cr}cr
-        </Text>
-      )}
+      <Text
+        flex="none"
+        fontFamily="mono"
+        fontSize="11px"
+        color="ink.fainter"
+      >
+        {cr}cr
+      </Text>
     </Flex>
   );
 }

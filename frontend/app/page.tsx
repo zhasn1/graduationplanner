@@ -3,8 +3,7 @@ import { getPrograms } from "@/lib/db";
 
 const Home = () => {
   const programs = getPrograms();
-  return <HomePage programs={programs} />
-  
-}
+  return <HomePage programs={programs} />;
+};
 
-export default Home
+export default Home;

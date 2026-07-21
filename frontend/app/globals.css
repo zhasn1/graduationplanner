@@ -1,30 +1,22 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-
 :root {
   --background: oklch(0.975 0.008 85);
   --foreground: oklch(0.413 0.166 20);
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-public-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-serif: var(--font-newsreader);
 }
 
 * {
   box-sizing: border-box;
 }
 
-html, 
+html,
 body {
   margin: 0;
   padding: 0;
 }
 
 body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-public-sans), system-ui, sans-serif;
@@ -35,9 +27,14 @@ body {
   color: oklch(0.68 0.015 262);
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
+.scrl::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.scrl::-webkit-scrollbar-thumb {
+  background: oklch(0.87 0.012 80);
+  border-radius: 2px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
