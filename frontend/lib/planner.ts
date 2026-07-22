@@ -183,6 +183,7 @@ export function getProgramPlan(programId: string): ProgramPlan | null {
   return {
     programId: program.id,
     programName: program.name,
+    career: program.career,
     totalCredits: program.total_credits ?? DEFAULT_TOTAL_CREDITS,
     sections,
   };

@@ -5,6 +5,7 @@ export interface Program {
   id: string;
   name: string;
   college: string;
+  career: string;
   type: string;
   total_credits: number | null;
 }
