@@ -46,6 +46,7 @@ export interface RequirementSection {
 
 export interface ProgramPlan {
   programId: string;
+  career: string;
   programName: string;
   totalCredits: number;
   sections: RequirementSection[];
