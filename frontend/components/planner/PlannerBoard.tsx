@@ -84,6 +84,7 @@ export function PlannerBoard({ plan }: PlannerBoardProps) {
     <Flex direction="column" minH="100vh" bg="canvas">
       <PlannerHeader
         program={plan.programName}
+        career={plan.career}
         creditsEarned={creditsEarned}
         totalCredits={plan.totalCredits}
       />

@@ -1,14 +1,18 @@
 import { Box, Button, Flex, Link, Text } from "@chakra-ui/react";
 import { FiChevronLeft } from "react-icons/fi";
 import NextLink from "next/link";
+import { careerLabel } from "../CareerTag";
+
 interface PlannerHeaderProps {
   program: string;
+  career: string;
   creditsEarned: number;
   totalCredits: number;
 }
 
 export function PlannerHeader({
   program,
+  career,
   creditsEarned,
   totalCredits,
 }: PlannerHeaderProps) {
@@ -77,8 +81,9 @@ export function PlannerHeader({
               borderRadius="4px"
             >
               {program}
+              {careerLabel(career) && ` · ${careerLabel(career)}`}
             </Box>
-            <Button
+            {/* <Button
               display="inline-flex"
               alignItems="center"
               gap="5px"
@@ -97,7 +102,7 @@ export function PlannerHeader({
               borderRadius="4px"
             >
               + Add minor or major
-            </Button>
+            </Button> */}
           </Flex>
         </Box>
       </Flex>

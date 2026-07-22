@@ -8,9 +8,10 @@ interface PlannerRouteProps {
 
 const Planner = async ({ searchParams }: PlannerRouteProps) => {
   const { program_id } = await searchParams;
-  if (!program_id) notFound();
+  const id = Array.isArray(program_id) ? program_id[0] : program_id;
+  if (!id) notFound();
 
-  const plan = getProgramPlan(program_id);
+  const plan = getProgramPlan(id);
   if (!plan) notFound();
 
   return <PlannerBoard plan={plan} />;
